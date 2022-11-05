@@ -8,19 +8,28 @@ const urlProducts = `http://localhost:3000/api/products`;
 des produits,  récupérer la réponse émise, et parcourir celle-ci pour
 insérer chaque élément (chaque produit) dans la page d’accueil
 (dans le DOM).*/
-async function fetchProduct(){
+async function fetchProducts(){
   const products = await fetch (urlProducts)
   if (products.ok === true){
     return products.json()
     }
   else throw new Error ('impossible de contacter le server')
 }
+
 /*Accédez aux éléments du DOM*/
 const container = document.getElementById('items');
-/*Créer des functionS pour insérer les produits dans HTML*/
-fetchProduct().then (jsonProducts => {
-  displayProducts(jsonProducts);
-})
+
+
+/*Appeler la fonction d'affichage des produits dans HTML*/
+function init(){
+  fetchProducts().then (jsonProducts => {
+    displayProducts(jsonProducts);
+  })
+}
+
+init();
+
+/*Afficher des produits dans HTML*/ 
 function displayProducts(jsonProducts) {
   for (let jsonProduct of jsonProducts) {
 
@@ -31,12 +40,12 @@ function displayProducts(jsonProducts) {
       console.log(product)
 
       container.innerHTML += `<a href="./product.html?id=${product._id}">          
-                                                              <article>
-                                                                  <img src="${product.imageUrl}"" alt="${product.altTxt}">
-                                                                  <h3 class="productName">${product.name}</h3>
-                                                                  <p class="productDescription">${product.description}</p>
-                                                              </article>
-                                                          </a>`;
+                                  <article>
+                                      <img src="${product.imageUrl}"" alt="${product.altTxt}">
+                                      <h3 class="productName">${product.name}</h3>
+                                      <p class="productDescription">${product.description}</p>
+                                  </article>
+                              </a>`;
   }
 }
 

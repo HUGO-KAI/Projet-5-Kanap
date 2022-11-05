@@ -1,4 +1,4 @@
-/*Créer une méthode pour ranger les données JSON dans class Product*/ 
+/*Créer une méthode pour ranger les données JSON dans objet Product*/ 
 class Product{
     constructor(jsonProduct){
         this.colors = jsonProduct.colors
