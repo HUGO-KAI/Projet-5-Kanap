@@ -33,12 +33,9 @@ init();
 function displayProducts(jsonProducts) {
   for (let jsonProduct of jsonProducts) {
 
-      /*Créer un objet product*/    
+      //Créer un objet product    
       let product = new Product(jsonProduct);
-
-      /*Vérifier si les données sont bien récupérées*/
-      console.log(product)
-
+      //Insérer un produit dans HTML
       container.innerHTML += `<a href="./product.html?id=${product._id}">          
                                   <article>
                                       <img src="${product.imageUrl}"" alt="${product.altTxt}">
