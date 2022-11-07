@@ -27,10 +27,12 @@ async function fetchProduct(){
     fetchProduct().then (jsonProduct => {
       //Afficher le produit dans HTML
       displayProduct(jsonProduct);
+      
       //Enregister le produit dans local storage après clique
       const addToCart = document.getElementById('addToCart');
       const itemColors = document.getElementById('colors');
       const itemQuantity = document.getElementById('quantity');
+
       addToCart.addEventListener('click', function() {          
         //Contrôler si la couleur est bien choisie
         let option = itemColors.options.selectedIndex
@@ -39,7 +41,6 @@ async function fetchProduct(){
           window.alert("Veuillez choisir la couleur");
           return
         }
-    
         //Contrôler si la quantité est entre 1 et 100 en unité entier
         let str = itemQuantity.value;
         let orderQuantity = +str;
@@ -47,7 +48,17 @@ async function fetchProduct(){
           window.alert("Veuillez choisir la quantité (entre 1 et 100 unité)")
           return
         }
-        let addedProducts = new Object(jsonProduct)
+        const addedProducts = {
+          "colors" : jsonProduct.colors,
+          "id" : jsonProduct._id,
+          "altTxt" : jsonProduct.altTxt,
+          "name" : jsonProduct.name,
+          "imageUrl" : jsonProduct.imageUrl,
+          "description" : jsonProduct.description,
+          "price" : jsonProduct.price,
+          "quantity":orderQuantity
+        }
+        console.log(addedProducts);
         let products = JSON.parse(localStorage.getItem("addedProducts"))
         if (products === null) {
           products = [];
@@ -57,8 +68,18 @@ async function fetchProduct(){
           localStorage.setItem("addedProducts", JSON.stringify(products));
         }
         else{
-          const searchItem = products.find(element => element.id == addedProducts.id && element.couleur == addedProducts.couleur);
-          console.log(searchItem);
+          
+          for (let element in products){
+            if (element.id == addedProducts.id && element.colors == addedProducts.colors){
+              console.log(products[element]);
+              var searchItem = products[element];
+            }
+            else{
+              var searchItem = 'undefined';
+            }
+            
+          }
+          
           if (searchItem == undefined){
             addedProducts["quantity"] = orderQuantity;
             addedProducts["colors"] = colorSelected;
@@ -66,10 +87,9 @@ async function fetchProduct(){
             localStorage.setItem("addedProducts", JSON.stringify(products));
           }
           else {
-            console.log(orderQuantity);
-            searchItem.quantity += orderQuantity;
-            console.log(searchItem);
-            localStorage.setItem("addedProducts", JSON.stringify(searchItem));
+            addedProducts["quantity"] += orderQuantity;
+            addedProducts["colors"] = colorSelected;
+            localStorage.setItem("addedProducts", JSON.stringify(addedProducts));
           }
         }  
       }
