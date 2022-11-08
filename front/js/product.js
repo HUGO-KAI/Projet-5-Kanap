@@ -39,7 +39,7 @@ function displayProduct(jsonProduct) {
   }
 }
 
-/*Enregister le produit dans local storage après ajouter au panier*/
+/*Enregister le produit dans local storage après cliquer sur le bouton 'ajouter au panier'*/
 const addToCart = document.getElementById('addToCart');
 const itemColors = document.getElementById('colors');
 const itemQuantity = document.getElementById('quantity');
@@ -74,24 +74,23 @@ function saveInLocalStorage(addedProducts) {
     localStorage.setItem("localProducts", JSON.stringify(localProducts));
   }
   else {
-      let found = 0;
-
-      for (let i = 0; i<localProducts.length; i++){
-        if (localProducts[i].id == addedProducts.id && localProducts[i].colors == addedProducts.colors){
-          localProducts[i].quantity = addedProducts.quantity + localProducts[i].quantity;
-          localStorage.setItem("localProducts", JSON.stringify(localProducts));
-          found = 1;
-        }
+    let found = 0;
+    //vérifier si le même produit(même id et même couleur) est déjà existe dans local storage, si oui, =>changer la quantité, si non =>ajouter un nouveau produit à la liste
+    for (let i = 0; i<localProducts.length; i++){
+      if (localProducts[i].id == addedProducts.id && localProducts[i].colors == addedProducts.colors){
+        localProducts[i].quantity = addedProducts.quantity + localProducts[i].quantity;
+        localStorage.setItem("localProducts", JSON.stringify(localProducts));
+        found = 1;
       }
-      console.log(found);
-      if (found == 0){
-          localProducts.push(addedProducts);
-          localStorage.setItem("localProducts", JSON.stringify(localProducts));
-      }  
-       
     }
-   
+    console.log(found);
+    if (found == 0){
+        localProducts.push(addedProducts);
+        localStorage.setItem("localProducts", JSON.stringify(localProducts));
+    }  
   }
+  window.alert('Produit est ajouté') 
+}
 
  
 
