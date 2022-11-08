@@ -20,10 +20,64 @@ const productName = document.getElementById('title');
 const productPrice = document.getElementById('price');
 const productDescription = document.getElementById('description');
 const productOption = document.getElementById("colors");
+
+/*Enregister le produit dans local storage après cliquer sur le bouton 'ajouter au panier'*/
+const addToCart = document.getElementById('addToCart');
+const itemColors = document.getElementById('colors');
+const itemQuantity = document.getElementById('quantity');
+
 init();
 function init(){
   fetchProduct().then (jsonProduct => {
-    displayProduct(jsonProduct);
+    displayProduct(jsonProduct)
+    addToCart.onclick = () => {
+      let option = itemColors.options.selectedIndex
+      if (option == 0) {
+        window.alert("Veuillez choisir la couleur");
+        return
+      }
+      let str = itemQuantity.value;
+      let orderQuantity = +str;
+      if (orderQuantity < 1 || orderQuantity > 100 || orderQuantity % 1 !== 0) {
+        window.alert("Veuillez choisir la quantité (entre 1 et 100 unité)")
+        return
+      }
+      let addedProducts = {
+        "id": productId,
+        "imageUrl": jsonProduct.imageUrl,
+        "name": productName.textContent,
+        "altTxt" : jsonProduct.altTxt,
+        "colors": itemColors.value,
+        "price": productPrice.textContent,
+        "quantity": orderQuantity
+      }
+      saveInLocalStorage(addedProducts)
+    }
+    function saveInLocalStorage(addedProducts) {
+      var localProducts = JSON.parse(localStorage.getItem("localProducts"))
+      if (localProducts === null) {
+        localProducts = [];
+        localProducts.push(addedProducts);
+        localStorage.setItem("localProducts", JSON.stringify(localProducts));
+      }
+      else {
+        let found = 0;
+        //vérifier si le même produit(même id et même couleur) est déjà existe dans local storage, si oui, =>changer la quantité, si non =>ajouter un nouveau produit à la liste
+        for (let i = 0; i<localProducts.length; i++){
+          if (localProducts[i].id == addedProducts.id && localProducts[i].colors == addedProducts.colors){
+            localProducts[i].quantity = addedProducts.quantity + localProducts[i].quantity;
+            localStorage.setItem("localProducts", JSON.stringify(localProducts));
+            found = 1;
+          }
+        }
+        console.log(found);
+        if (found == 0){
+            localProducts.push(addedProducts);
+            localStorage.setItem("localProducts", JSON.stringify(localProducts));
+        }  
+      }
+      window.alert('Produit est ajouté') 
+    }
   })
 }
 function displayProduct(jsonProduct) {
@@ -39,58 +93,9 @@ function displayProduct(jsonProduct) {
   }
 }
 
-/*Enregister le produit dans local storage après cliquer sur le bouton 'ajouter au panier'*/
-const addToCart = document.getElementById('addToCart');
-const itemColors = document.getElementById('colors');
-const itemQuantity = document.getElementById('quantity');
 
-addToCart.onclick = () => {
-  let option = itemColors.options.selectedIndex
-  if (option == 0) {
-    window.alert("Veuillez choisir la couleur");
-    return
-  }
-  let str = itemQuantity.value;
-  let orderQuantity = +str;
-  if (orderQuantity < 1 || orderQuantity > 100 || orderQuantity % 1 !== 0) {
-    window.alert("Veuillez choisir la quantité (entre 1 et 100 unité)")
-    return
-  }
-  let addedProducts = {
-    "id": productId,
-    "imageUrl": urlProduct,
-    "name": productName.textContent,
-    "colors": itemColors.value,
-    "price": productPrice.textContent,
-    "quantity": orderQuantity
-  }
-  saveInLocalStorage(addedProducts)
-}
-function saveInLocalStorage(addedProducts) {
-  var localProducts = JSON.parse(localStorage.getItem("localProducts"))
-  if (localProducts === null) {
-    localProducts = [];
-    localProducts.push(addedProducts);
-    localStorage.setItem("localProducts", JSON.stringify(localProducts));
-  }
-  else {
-    let found = 0;
-    //vérifier si le même produit(même id et même couleur) est déjà existe dans local storage, si oui, =>changer la quantité, si non =>ajouter un nouveau produit à la liste
-    for (let i = 0; i<localProducts.length; i++){
-      if (localProducts[i].id == addedProducts.id && localProducts[i].colors == addedProducts.colors){
-        localProducts[i].quantity = addedProducts.quantity + localProducts[i].quantity;
-        localStorage.setItem("localProducts", JSON.stringify(localProducts));
-        found = 1;
-      }
-    }
-    console.log(found);
-    if (found == 0){
-        localProducts.push(addedProducts);
-        localStorage.setItem("localProducts", JSON.stringify(localProducts));
-    }  
-  }
-  window.alert('Produit est ajouté') 
-}
+
+
 
  
 
