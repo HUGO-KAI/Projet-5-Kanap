@@ -8,6 +8,8 @@ function init () {
         document.querySelector ('h1').textContent = 'Votre panier est vide'
     }
     else {
+        let itemsQuantity = 0;
+        let itemsPrice = 0;
         for (let i = 0; i < localProducts.length; i++){
             container.innerHTML += `<article class="cart__item" data-id=${localProducts[i].id} data-color="${localProducts[i].colors}">
                                         <div class="cart__item__img">
@@ -30,7 +32,12 @@ function init () {
                                         </div>
                                         </div>
                                     </article>`;
+            itemsQuantity += localProducts[i].quantity;
+            itemsPrice += localProducts[i].price;
         }
+        document.getElementById('totalQuantity').textContent = itemsQuantity;
+        document.getElementById('totalPrice').textContent = itemsPrice;
+        
     }
 }
 init()
