@@ -33,7 +33,7 @@ function init () {
                                         </div>
                                     </article>`;
             itemsQuantity += localProducts[i].quantity;
-            itemsPrice += localProducts[i].price;
+            itemsPrice += localProducts[i].quantity * parseInt(localProducts[i].price);
         }
         document.getElementById('totalQuantity').textContent = itemsQuantity;
         document.getElementById('totalPrice').textContent = itemsPrice;
