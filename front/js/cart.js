@@ -45,16 +45,35 @@ const supprimerButtons = document.querySelectorAll(".deleteItem");
 
 supprimerButtons.forEach(function(supprimerButton){
     supprimerButton.addEventListener("click",function(){
-        supprimerId = supprimerButton.closest(".cart__item").getAttribute('data-id');
-        supprimerColors = supprimerButton.closest(".cart__item").getAttribute('data-color');
+        let supprimerId = supprimerButton.closest(".cart__item").getAttribute('data-id');
+        let supprimerColors = supprimerButton.closest(".cart__item").getAttribute('data-color');
         for(let localProduct of localProducts){
-            console.log(localProducts);
             if (localProduct.id == supprimerId && localProduct.colors == supprimerColors){
                 localProducts = localProducts.filter(product => product != localProduct);
+                localStorage.setItem("localProducts", JSON.stringify(localProducts));
+                
+            }
+        }
+        location.reload();
+    })
+})
+
+const changeQuantityInputs = document.querySelectorAll(".itemQuantity");
+
+changeQuantityInputs.forEach(function(changeQuantityInput){
+    changeQuantityInput.addEventListener("change", function(){
+        let changeQuantityId = changeQuantityInput.closest(".cart__item").getAttribute('data-id');
+        let changeQuantitycolors = changeQuantityInput.closest(".cart__item").getAttribute('data-color');
+        for(let localProduct of localProducts){
+            if (localProduct.id == changeQuantityId && localProduct.colors == changeQuantitycolors){
+                localProduct.quantity = parseInt(changeQuantityInput.value);
                 localStorage.setItem("localProducts", JSON.stringify(localProducts));
             }
         }
         location.reload();
     })
 })
+
+    
+
 
