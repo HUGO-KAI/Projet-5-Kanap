@@ -38,24 +38,23 @@ function init () {
         }
         document.getElementById('totalQuantity').textContent = itemsQuantity;
         document.getElementById('totalPrice').textContent = itemsPrice;
-        
+       
     }
-    const supprimer = document.getElementsByClassName('deleteItem');
-    
-    
-}
+   }
+const supprimerButtons = document.querySelectorAll(".deleteItem");
 
-const el = document.querySelector(".cart__item");
-/*const el = document.querySelector(".cart__item");
-for (let i = 0; i < el.length; i++){
-    console.log(el[i].dataset.id + el[i].dataset.color );
-}*/
-function deleteItem (evt) {
-    if (evt.target.closest(".deleteItem")){
-        el.style = "display: none"
-    }
-}
-
-el.addEventListener("click",deleteItem );
- 
+supprimerButtons.forEach(function(supprimerButton){
+    supprimerButton.addEventListener("click",function(){
+        supprimerId = supprimerButton.closest(".cart__item").getAttribute('data-id');
+        supprimerColors = supprimerButton.closest(".cart__item").getAttribute('data-color');
+        for(let localProduct of localProducts){
+            console.log(localProducts);
+            if (localProduct.id == supprimerId && localProduct.colors == supprimerColors){
+                localProducts = localProducts.filter(product => product != localProduct);
+                localStorage.setItem("localProducts", JSON.stringify(localProducts));
+            }
+        }
+        location.reload();
+    })
+})
 

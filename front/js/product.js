@@ -70,7 +70,7 @@ function init(){
             found = 1;
           }
         }
-        console.log(found);
+        
         if (found == 0){
             localProducts.push(addedProducts);
             localStorage.setItem("localProducts", JSON.stringify(localProducts));
