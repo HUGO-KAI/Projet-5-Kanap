@@ -195,10 +195,15 @@ form.addEventListener('submit',function(e){
                 
             }),
             
-        }).then (response => {
-            const data = response.json();
-            console.log(orderId)
+        }) .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+       console.log(data.orderId);
         })
+  
+        .catch(function (err) {
+          alert("erreur");
+        });
        
     }
 });
