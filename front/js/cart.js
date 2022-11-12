@@ -83,7 +83,7 @@ changeQuantityInputs.forEach(function(changeQuantityInput){
 const form = document.querySelector('.cart__order__form');
 
 //valider input prénom
-let nameRegExp = new RegExp (/^[a-zA-Z ,.'-éèàë]+$/i);
+let nameRegExp = /^[a-z\è\é\ç\à]+[\w\s_'-]*[a-z\è\é\ç\à]+$/igm;
 form.firstName.addEventListener('change', function(){
     valideFirstName(this);
 });
@@ -132,9 +132,7 @@ const valideCity = function(inputVille){
 };
 
 //valider input adresse
-let adresseRegExp = new RegExp (
-    '[a-zA-Z0-9]'
-);
+let adresseRegExp = /^[a-zA-Z0-9\é\è\ë\à\ç\ù\ä]{1,}[\,\_\-\ ]+[a-zA-Z\é\è\ë\à\ç\ù\_\ä\ ]{2,}$/;
 form.address.addEventListener('change', function(){
     valideAdresse(this);
 });
