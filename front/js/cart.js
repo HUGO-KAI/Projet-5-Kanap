@@ -83,13 +83,13 @@ changeQuantityInputs.forEach(function(changeQuantityInput){
 const form = document.querySelector('.cart__order__form');
 
 //valider input prénom
-let nameRegExp = /^[a-z\è\é\ç\à]+[\w\s_'-]*[a-z\è\é\ç\à]+$/igm;
+let nameRegExp = /^[a-z\é\è\ç]+[a-z\é\è\ç\s\-\'\_\/]*[a-z\é\è\ç\s]$/i;
 form.firstName.addEventListener('change', function(){
     valideFirstName(this);
 });
 const valideFirstName = function(inputFirstName){
-    let test = nameRegExp.test(inputFirstName.value);
-    if (test == false) {
+    let testFirstName = nameRegExp.test(inputFirstName.value);
+    if (testFirstName == false) {
         document.getElementById("firstNameErrorMsg").textContent = "Prénom non valide";
         return false;
     }
@@ -104,8 +104,8 @@ form.lastName.addEventListener('change', function(){
     valideLastName(this);
 });
 const valideLastName = function(inputLastName){
-    let test = nameRegExp.test(inputLastName.value);
-    if (test == false) {
+    let testLastName = nameRegExp.test(inputLastName.value);
+    if (testLastName == false) {
         document.getElementById("lastNameErrorMsg").textContent = "Nom non valide";
         return false;
     }
@@ -120,8 +120,8 @@ form.city.addEventListener('change', function(){
     valideCity(this);
 });
 const valideCity = function(inputVille){
-    let test = nameRegExp.test(inputVille.value);
-    if (test == false) {
+    let testCity = nameRegExp.test(inputVille.value);
+    if (testCity == false) {
         document.getElementById("cityErrorMsg").textContent = "Ville non valide";
         return false;
     }
@@ -132,7 +132,7 @@ const valideCity = function(inputVille){
 };
 
 //valider input adresse
-let adresseRegExp = /^[a-zA-Z0-9\é\è\ë\à\ç\ù\ä]{1,}[\,\_\-\ ]+[a-zA-Z\é\è\ë\à\ç\ù\_\ä\ ]{2,}$/;
+let adresseRegExp = /^[a-z0-9\é\è\ç]+[a-z0-9\é\è\ç\s\-\'\_\/\,]*[a-z\é\è\ç]$/i;
 form.address.addEventListener('change', function(){
     valideAdresse(this);
 });
@@ -165,7 +165,7 @@ const valideEmail = function(inputEmail){
     }
 };
 
-console.log(form.firstName.value)
+
 /*Constituer un objet contact (à partir des données du formulaire)*/
 const urlOrder = `http://localhost:3000/api/products/order`;
 let getId = localProducts.map(product => product.id);
@@ -180,8 +180,7 @@ form.addEventListener('submit',function(e){
         "city":form.city.value,
         "email":form.email.value
     };
-    console.log(contact);
-    console.log(getId);
+    
     if (valideFirstName(form.firstName) && valideLastName(form.lastName)  && valideAdresse(form.address) && valideCity(form.city) && valideEmail(form.email)){
         
         const promise = fetch(urlOrder, {
@@ -196,6 +195,9 @@ form.addEventListener('submit',function(e){
                 
             }),
             
+        }).then (response => {
+            const data = response.json();
+            console.log(orderId)
         })
        
     }
