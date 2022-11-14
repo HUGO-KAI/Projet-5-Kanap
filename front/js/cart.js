@@ -1,14 +1,15 @@
 /*Afficer les produits choisis et écouter le changement de quantité ou supprimer*/
 const urlProducts = `http://localhost:3000/api/products`;
 container = document.getElementById('cart__items');
-var localProducts = JSON.parse(localStorage.getItem("localProducts"))
+var localProducts = JSON.parse(localStorage.getItem("localProducts"));
+let allProducts = [];
 
-/*Afficher les canapés choisis par utilisateur dans la page panier*/
-init(urlProducts)
+/*Afficher les canapés choisis par l'utilisateur dans la page panier*/
+init(urlProducts);
 function init (url) {
     if (localProducts == null || localProducts.length == 0){
-        
         document.querySelector ('h1').textContent = 'Votre panier est vide';
+        totalQuantityPrice ();
     }
     else {
         fetch(url)
@@ -18,8 +19,7 @@ function init (url) {
           }
         })
         .then(function(products) {
-            let itemsQuantity = 0;
-            let itemsPrice = 0;
+            allProducts = products;
             for (let i = 0; i < products.length; i++ ){
                 for (let j = 0; j < localProducts.length; j++){
                     if (products[i]._id == localProducts[j].id){
@@ -44,27 +44,49 @@ function init (url) {
                         </div>
                         </div>
                     </article>`;
-                    itemsQuantity += parseInt(localProducts[j].quantity);
-                    itemsPrice += itemsQuantity * parseFloat(products[i].price);
                     }
                 }
             }
+            totalQuantityPrice ();
             const supprimerButtons = document.querySelectorAll(".deleteItem");
             supprimerButtons.forEach(function(supprimerButton){
                 supprimerButton.addEventListener("click",function(){
                     deleteItem(supprimerButton);
+                    totalQuantityPrice ();
                 })
-            changeQuantity(localProducts);
-            
-            document.getElementById("totalQuantity").textContent = itemsQuantity;
-            document.getElementById("totalPrice").textContent = itemsPrice;
-        }
-        )})
+            })
+            const changeButtons = document.querySelectorAll(".itemQuantity");
+            changeButtons.forEach(function(changeButton){
+                changeButton.addEventListener("change",function(){
+                    changeQuantity(changeButton);
+                    totalQuantityPrice ();
+                })
+            })
+
+        })
         .catch(function(err) {
             console.log(err);
         })
+        
     }   
 }    
+
+/*Indiquer quantité totale et le prix total du panier*/
+function totalQuantityPrice (){
+    localProducts = JSON.parse(localStorage.getItem("localProducts"));
+    let itemsQuantity = 0;
+    let itemsPrice = 0;
+    for (let i = 0; i < localProducts.length; i++){
+        for (let j = 0; j < allProducts.length; j++){
+            if (localProducts[i].id == allProducts[j]._id){
+                itemsQuantity += parseInt(localProducts[i].quantity);
+                itemsPrice += parseInt(localProducts[i].quantity) * parseFloat(allProducts[j].price);
+            }
+        }
+    }
+    document.getElementById("totalQuantity").textContent = itemsQuantity;
+    document.getElementById("totalPrice").textContent = itemsPrice;
+}
 
 /*Permettre aux utilisateurs de supprimer les items dans le panier */
 function deleteItem(supprimerButton){
@@ -79,34 +101,25 @@ function deleteItem(supprimerButton){
     }
 }
    
-
-
-
 /*Permettre aux utilisateurs de modifier la quantité des items présent dans le panier */
-function changeQuantity(){
-    const changeQuantityInputs = document.querySelectorAll(".itemQuantity");
-    changeQuantityInputs.forEach(function(changeQuantityInput){
-        changeQuantityInput.addEventListener("change", function(){
-            let changeQuantityId = changeQuantityInput.closest(".cart__item").getAttribute('data-id');
-            let changeQuantitycolors = changeQuantityInput.closest(".cart__item").getAttribute('data-color');
-            for(let localProduct of localProducts){
-                if (localProduct.id == changeQuantityId && localProduct.colors == changeQuantitycolors){
-                    localProduct.quantity = parseInt(changeQuantityInput.value);
-                    localStorage.setItem("localProducts", JSON.stringify(localProducts));
-                }
-            }
-            
-        })
-    })
+function changeQuantity(changeQuantityInput){
+   
+    let changeQuantityId = changeQuantityInput.closest(".cart__item").getAttribute('data-id');
+    let changeQuantitycolors = changeQuantityInput.closest(".cart__item").getAttribute('data-color');
+    let changeQuantityP = changeQuantityInput.previousElementSibling;
+   
+    for(let localProduct of localProducts){
+        if (localProduct.id == changeQuantityId && localProduct.colors == changeQuantitycolors){
+            localProduct.quantity = parseInt(changeQuantityInput.value);
+            changeQuantityP.textContent = `Qté : ${localProduct.quantity} `;
+            localStorage.setItem("localProducts", JSON.stringify(localProducts));
+        }
+    }
+    
 }
 
-
-
-
-/*Valider l'information saisi par acheteur dans le formulaire*/
-const form = document.querySelector('.cart__order__form');
-
 //valider input prénom
+const form = document.querySelector('.cart__order__form');
 let nameRegExp = /^[a-z\é\è\ç]+[a-z\é\è\ç\s\-\'\_\/]*[a-z\é\è\ç\s]$/i;
 form.firstName.addEventListener('change', function(){
     valideFirstName(this);
@@ -114,7 +127,7 @@ form.firstName.addEventListener('change', function(){
 const valideFirstName = function(inputFirstName){
     let testFirstName = nameRegExp.test(inputFirstName.value);
     if (testFirstName == false) {
-        document.getElementById("firstNameErrorMsg").textContent = "Prénom non valide";
+        document.getElementById("firstNameErrorMsg").textContent = "Prénom non valide, veuillez saisir votre prénom en alphbet latin ou français. Example: hélène, françois, Jean-luc...";
         return false;
     }
     else {
@@ -172,7 +185,7 @@ const valideAdresse = function(inputAdresse){
     }
 };
 
-//valider email
+//valider input email
 var emailRegExp = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;
 form.email.addEventListener('change', function(){
     valideEmail(this);
@@ -193,7 +206,6 @@ const valideEmail = function(inputEmail){
 /*Constituer un objet contact (à partir des données du formulaire)*/
 const urlOrder = `http://localhost:3000/api/products/order`;
 let getId = localProducts.map(product => product.id);
-
 
 form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -226,7 +238,7 @@ form.addEventListener('submit',function(e){
         })
   
         .catch(function (err) {
-          alert("erreur");
+          console.log(err)
         });
        
     }

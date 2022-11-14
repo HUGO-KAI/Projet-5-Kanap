@@ -55,7 +55,6 @@ const productDescription = document.getElementById('description');
 
 /*Insérer le produit dans HTML*/ 
 function displayProduct(product) {
-  console.log(product);
     if (productId == product._id) {
     itemImg.innerHTML = `<img src="${product.imageUrl}"" alt="${product.altTxt}">`
     productName.textContent = product.name
