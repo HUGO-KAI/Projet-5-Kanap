@@ -69,11 +69,17 @@ function totalQuantityPrice (){
     localProducts = JSON.parse(localStorage.getItem("localProducts"));
     let itemsQuantity = 0;
     let itemsPrice = 0;
-    for (let i = 0; i < localProducts.length; i++){
-        for (let j = 0; j < allProducts.length; j++){
-            if (localProducts[i].id == allProducts[j]._id){
-                itemsQuantity += parseInt(localProducts[i].quantity);
-                itemsPrice += parseInt(localProducts[i].quantity) * parseFloat(allProducts[j].price);
+    if (localProducts == null){
+        itemsQuantity = 0;
+        itemsPrice = 0;
+    }
+    else {
+        for (let i = 0; i < localProducts.length; i++){
+            for (let j = 0; j < allProducts.length; j++){
+                if (localProducts[i].id == allProducts[j]._id){
+                    itemsQuantity += parseInt(localProducts[i].quantity);
+                    itemsPrice += parseInt(localProducts[i].quantity) * parseFloat(allProducts[j].price);
+                }
             }
         }
     }
@@ -207,36 +213,50 @@ const valideEmail = function(inputEmail){
 
 /*Constituer un objet contact (à partir des données du formulaire)*/
 const urlOrder = `http://localhost:3000/api/products/order`;
-let getId = localProducts.map(product => product.id);
-form.addEventListener('submit',function(e){
-    e.preventDefault();
-    let contact = {
-        "firstName":form.firstName.value,
-        "lastName":form.lastName.value,
-        "address":form.address.value,
-        "city":form.city.value,
-        "email":form.email.value
-    };
-
-    /*valider et envoyer la fiche de contact et id des products, puis récupère id de la commande dans la réponse de server.ensuite, rediger vers la page de confirmation et supprimer les données enregistrées dans local storage*/
-    if (valideFirstName(form.firstName) && valideLastName(form.lastName)  && valideAdresse(form.address) && valideCity(form.city) && valideEmail(form.email)){
-        fetch(urlOrder, {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json', 
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                contact,
-                products : getId
-            }),
-        }) .then((res) => res.json())
-        .then((data) => {
-          window.location.href = `confirmation.html?id=${data.orderId}`;
-          localStorage.clear();  
-        })
-        .catch(function (err) {
-          console.log(err)
-        });
+window.onload = function (){
+    const buttonCommander = document.getElementById("order");
+    buttonCommander.onclick = function (event){
+        localProducts = JSON.parse(localStorage.getItem("localProducts"));
+        if (localProducts == null || localProducts.length == 0){
+            event.preventDefault();
+            window.alert ("votre panier est vide");
+            return;
+        }
+        else {
+            let getId = localProducts.map(product => product.id);
+            form.addEventListener('submit',function(e){
+                e.preventDefault();
+                let contact = {
+                    "firstName":form.firstName.value,
+                    "lastName":form.lastName.value,
+                    "address":form.address.value,
+                    "city":form.city.value,
+                    "email":form.email.value
+                };
+            
+                /*valider et envoyer la fiche de contact et id des products, puis récupère id de la commande dans la réponse de server.ensuite, rediger vers la page de confirmation et supprimer les données enregistrées dans local storage*/
+                if (valideFirstName(form.firstName) && valideLastName(form.lastName)  && valideAdresse(form.address) && valideCity(form.city) && valideEmail(form.email)){
+                    fetch(urlOrder, {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json', 
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            contact,
+                            products : getId
+                        }),
+                    }) .then((res) => res.json())
+                    .then((data) => {
+                      window.location.href = `confirmation.html?id=${data.orderId}`;
+                      localStorage.clear();  
+                    })
+                    .catch(function (err) {
+                      console.log(err)
+                    });
+                }
+            });
+        }
     }
-});
+}
+
