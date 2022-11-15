@@ -48,21 +48,8 @@ function init (url) {
                 }
             }
             totalQuantityPrice ();
-            const supprimerButtons = document.querySelectorAll(".deleteItem");
-            supprimerButtons.forEach(function(supprimerButton){
-                supprimerButton.addEventListener("click",function(){
-                    deleteItem(supprimerButton);
-                    totalQuantityPrice ();
-                })
-            })
-            const changeButtons = document.querySelectorAll(".itemQuantity");
-            changeButtons.forEach(function(changeButton){
-                changeButton.addEventListener("change",function(){
-                    changeQuantity(changeButton);
-                    totalQuantityPrice ();
-                })
-            })
-
+            deleteItem();
+            changeQuantity();
         })
         .catch(function(err) {
             console.log(err);
@@ -89,33 +76,43 @@ function totalQuantityPrice (){
 }
 
 /*Permettre aux utilisateurs de supprimer les items dans le panier */
-function deleteItem(supprimerButton){
-    let supprimerId = supprimerButton.closest(".cart__item").getAttribute('data-id');
-    let supprimerColors = supprimerButton.closest(".cart__item").getAttribute('data-color');
-    for(let localProduct of localProducts){
-        if (localProduct.id == supprimerId && localProduct.colors == supprimerColors){
-            supprimerButton.closest(".cart__item").style = "display:none";
-            localProducts = localProducts.filter(product => product != localProduct);
-            localStorage.setItem("localProducts", JSON.stringify(localProducts));
-        }
-    }
-}
-   
-/*Permettre aux utilisateurs de modifier la quantité des items présent dans le panier */
-function changeQuantity(changeQuantityInput){
-   
-    let changeQuantityId = changeQuantityInput.closest(".cart__item").getAttribute('data-id');
-    let changeQuantitycolors = changeQuantityInput.closest(".cart__item").getAttribute('data-color');
-    let changeQuantityP = changeQuantityInput.previousElementSibling;
-   
-    for(let localProduct of localProducts){
-        if (localProduct.id == changeQuantityId && localProduct.colors == changeQuantitycolors){
-            localProduct.quantity = parseInt(changeQuantityInput.value);
-            changeQuantityP.textContent = `Qté : ${localProduct.quantity} `;
-            localStorage.setItem("localProducts", JSON.stringify(localProducts));
-        }
-    }
+function deleteItem(){
+    const supprimerButtons = document.querySelectorAll(".deleteItem");
+    supprimerButtons.forEach(function(supprimerButton){
+        supprimerButton.addEventListener("click",function(){
+            let supprimerId = supprimerButton.closest(".cart__item").getAttribute('data-id');
+            let supprimerColors = supprimerButton.closest(".cart__item").getAttribute('data-color');
+            for(let localProduct of localProducts){
+                if (localProduct.id == supprimerId && localProduct.colors == supprimerColors){
+                    supprimerButton.closest(".cart__item").style = "display:none";
+                    localProducts = localProducts.filter(product => product != localProduct);
+                    localStorage.setItem("localProducts", JSON.stringify(localProducts));
+                }
+            }
+            totalQuantityPrice ();
+        })
+    })
     
+}
+            
+/*Permettre aux utilisateurs de modifier la quantité des items présent dans le panier */
+function changeQuantity(){
+    const changeButtons = document.querySelectorAll(".itemQuantity");
+    changeButtons.forEach(function(changeButton){
+        changeButton.addEventListener("change",function(){
+            let changeQuantityId = changeButton.closest(".cart__item").getAttribute('data-id');
+            let changeQuantitycolors = changeButton.closest(".cart__item").getAttribute('data-color');
+            let changeQuantityP = changeButton.previousElementSibling;
+            for(let localProduct of localProducts){
+                if (localProduct.id == changeQuantityId && localProduct.colors == changeQuantitycolors){
+                    localProduct.quantity = parseInt(changeButton.value);
+                    changeQuantityP.textContent = `Qté : ${localProduct.quantity} `;
+                    localStorage.setItem("localProducts", JSON.stringify(localProducts));
+                }
+            }
+            totalQuantityPrice ();
+        })
+    })
 }
 
 //valider input prénom
