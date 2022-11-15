@@ -1,10 +1,16 @@
-/*Afficer les produits choisis et écouter le changement de quantité ou supprimer*/
+/*
+- Afficer les produits choisis
+- Ecouter le changement de quantité ou supprimer des items dans le panier
+- Valider le formulaire de contact 
+- Envoyer le formulaire de contact et id des products au server
+- Récupérer Id de la commande et rediger vers la page confirmation
+*/
+
+/*Afficher les produits choisis par l'utilisateur sur la page panier*/
 const urlProducts = `http://localhost:3000/api/products`;
 container = document.getElementById('cart__items');
 var localProducts = JSON.parse(localStorage.getItem("localProducts"));
 let allProducts = [];
-
-/*Afficher les canapés choisis par l'utilisateur dans la page panier*/
 init(urlProducts);
 function init (url) {
     if (localProducts == null || localProducts.length == 0){
@@ -58,7 +64,7 @@ function init (url) {
     }   
 }    
 
-/*Indiquer quantité totale et le prix total du panier*/
+/*Indiquer quantité totale et le prix total sur la page panier*/
 function totalQuantityPrice (){
     localProducts = JSON.parse(localStorage.getItem("localProducts"));
     let itemsQuantity = 0;
@@ -95,7 +101,7 @@ function deleteItem(){
     
 }
             
-/*Permettre aux utilisateurs de modifier la quantité des items présent dans le panier */
+/*Permettre aux utilisateurs de modifier la quantité des items présents dans le panier */
 function changeQuantity(){
     const changeButtons = document.querySelectorAll(".itemQuantity");
     changeButtons.forEach(function(changeButton){
@@ -124,7 +130,7 @@ form.firstName.addEventListener('change', function(){
 const valideFirstName = function(inputFirstName){
     let testFirstName = nameRegExp.test(inputFirstName.value);
     if (testFirstName == false) {
-        document.getElementById("firstNameErrorMsg").textContent = "Prénom non valide, veuillez saisir votre prénom en alphbet latin ou français. Example: hélène, françois, Jean-luc...";
+        document.getElementById("firstNameErrorMsg").textContent = "Prénom non valide. Example: Patrick, hélène, françois, Jean-luc...";
         return false;
     }
     else {
@@ -140,7 +146,7 @@ form.lastName.addEventListener('change', function(){
 const valideLastName = function(inputLastName){
     let testLastName = nameRegExp.test(inputLastName.value);
     if (testLastName == false) {
-        document.getElementById("lastNameErrorMsg").textContent = "Nom non valide";
+        document.getElementById("lastNameErrorMsg").textContent = "Nom non valide. Example: Martin, D'Artagnan, Robespierre...";
         return false;
     }
     else {
@@ -156,7 +162,7 @@ form.city.addEventListener('change', function(){
 const valideCity = function(inputVille){
     let testCity = nameRegExp.test(inputVille.value);
     if (testCity == false) {
-        document.getElementById("cityErrorMsg").textContent = "Ville non valide";
+        document.getElementById("cityErrorMsg").textContent = "Ville non valide.Example: Paris, Lyon, Vitry-sur-Seine...";
         return false;
     }
     else {
@@ -173,7 +179,7 @@ form.address.addEventListener('change', function(){
 const valideAdresse = function(inputAdresse){
     let test = adresseRegExp.test(inputAdresse.value);
     if (test == false) {
-        document.getElementById("addressErrorMsg").textContent = "L'adresse non valide";
+        document.getElementById("addressErrorMsg").textContent = "L'adresse non valide.";
         return false;
     }
     else {
@@ -199,11 +205,9 @@ const valideEmail = function(inputEmail){
     }
 };
 
-
 /*Constituer un objet contact (à partir des données du formulaire)*/
 const urlOrder = `http://localhost:3000/api/products/order`;
 let getId = localProducts.map(product => product.id);
-
 form.addEventListener('submit',function(e){
     e.preventDefault();
     let contact = {
@@ -213,9 +217,9 @@ form.addEventListener('submit',function(e){
         "city":form.city.value,
         "email":form.email.value
     };
-    
+
+    /*valider et envoyer la fiche de contact et id des products, puis récupère id de la commande dans la réponse de server.ensuite, rediger vers la page de confirmation et supprimer les données enregistrées dans local storage*/
     if (valideFirstName(form.firstName) && valideLastName(form.lastName)  && valideAdresse(form.address) && valideCity(form.city) && valideEmail(form.email)){
-        
         fetch(urlOrder, {
             method: "POST",
             headers: {
@@ -225,18 +229,14 @@ form.addEventListener('submit',function(e){
             body: JSON.stringify({
                 contact,
                 products : getId
-                
             }),
-            
         }) .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-       console.log(data.orderId);
+          window.location.href = `confirmation.html?id=${data.orderId}`;
+          localStorage.clear();  
         })
-  
         .catch(function (err) {
           console.log(err)
         });
-       
     }
 });

@@ -1,11 +1,9 @@
 /*
-AFFICHER LES PRODUITS DE LA PAGE D'ACCUEIL ET SES INTERACTIONS
+AFFICHER LES PRODUITS SUR LA PAGE D'ACCUEIL ET SES INTERACTIONS
 */
 
-//Récupérer le lien de API 
+/* Récupérer la liste de tous les produits*/
 const urlProducts = `http://localhost:3000/api/products`;
-
-/* Récupérer les données des produits*/
 init(urlProducts);
 function init(url) {
   //
@@ -22,6 +20,7 @@ function init(url) {
     console.log(err);
   });
 }
+
 //Afficher les produits dans HTML
 const container = document.getElementById("items");
 function displayProducts(products) {

@@ -1,15 +1,14 @@
 /*
-AFFICHAGE DU PRODUIT SELECTIONNE ET ENREGISTRER DANS LA LISTE LOCAL STORAGE
+- AFFICHAGE DU PRODUIT SELECTIONNE SUR LA PAGE PRODUCT 
+- ENREGISTRER LE PRODUIT CHOISI ET LA QUANTITE DANS LOCAL STORAGE APRES CLIQUER SUR AJOUTER
 */
-//Récupérer Id du produit visité
+
+/*Récupérer les données du produit selectionné */
 let url = new URL(window.location.href);
 const productId = url.searchParams.get("id");
 const urlProduct = `http://localhost:3000/api/products/${productId}`;
-
-/*Récupérer les DOMs nécéssaires*/
 const itemQuantity = document.getElementById('quantity');
 const productOption = document.getElementById("colors");
-/*Récupérer les données du produit écouter le changement de couleur et de quantité*/
 init(urlProduct);
 function init(url) {
   fetch(url)
@@ -47,13 +46,11 @@ function init(url) {
     )
 }
 
+/*Afficher le produit dans HTML*/
 const itemImg = document.querySelector(".item__img");
 const productName = document.getElementById('title');
 const productPrice = document.getElementById('price');
-const productDescription = document.getElementById('description');
-
-
-/*Insérer le produit dans HTML*/ 
+const productDescription = document.getElementById('description'); 
 function displayProduct(product) {
     if (productId == product._id) {
     itemImg.innerHTML = `<img src="${product.imageUrl}"" alt="${product.altTxt}">`
