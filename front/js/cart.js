@@ -223,7 +223,9 @@ window.onload = function (){
             return;
         }
         else {
+            //Créer un nouveau tableau avec les résultats de l'appel d'une fonction fournie sur chaque élément du tableau appelant
             let getId = localProducts.map(product => product.id);
+            
             form.addEventListener('submit',function(e){
                 e.preventDefault();
                 
