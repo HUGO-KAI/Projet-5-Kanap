@@ -226,16 +226,16 @@ window.onload = function (){
             let getId = localProducts.map(product => product.id);
             form.addEventListener('submit',function(e){
                 e.preventDefault();
-                let contact = {
-                    "firstName":form.firstName.value,
-                    "lastName":form.lastName.value,
-                    "address":form.address.value,
-                    "city":form.city.value,
-                    "email":form.email.value
-                };
-            
+                
                 /*valider et envoyer la fiche de contact et id des products, puis récupère id de la commande dans la réponse de server.ensuite, rediger vers la page de confirmation et supprimer les données enregistrées dans local storage*/
                 if (valideFirstName(form.firstName) && valideLastName(form.lastName)  && valideAdresse(form.address) && valideCity(form.city) && valideEmail(form.email)){
+                    let contact = {
+                        "firstName":form.firstName.value,
+                        "lastName":form.lastName.value,
+                        "address":form.address.value,
+                        "city":form.city.value,
+                        "email":form.email.value
+                    };
                     fetch(urlOrder, {
                         method: "POST",
                         headers: {
