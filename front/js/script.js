@@ -26,14 +26,14 @@ const container = document.getElementById("items");
 function displayProducts(products) {
   for (let i = 0; i < products.length; i++){
     container.innerHTML += `<a href="./product.html?id=${products[i]._id}">          
-                                  <article>
-                                      <img src="${products[i].imageUrl}"" alt="${products[i].altTxt}">
-                                      <h3 class="productName">${products[i].name}</h3>
-                                      <p class="productDescription">${products[i].description}</p>
-                                  </article>
-                              </a>`;
-    }
+                              <article>
+                                  <img src="${products[i].imageUrl}"" alt="${products[i].altTxt}">
+                                  <h3 class="productName">${products[i].name}</h3>
+                                  <p class="productDescription">${products[i].description}</p>
+                              </article>
+                            </a>`;
   }
+}
 
 
 
