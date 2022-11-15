@@ -225,7 +225,7 @@ window.onload = function (){
         else {
             //Créer un nouveau tableau avec les résultats de l'appel d'une fonction fournie sur chaque élément du tableau appelant
             let getId = localProducts.map(product => product.id);
-            
+            //Soummettre le formulaire de contact et la liste de commande
             form.addEventListener('submit',function(e){
                 e.preventDefault();
                 
