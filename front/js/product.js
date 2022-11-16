@@ -6,9 +6,9 @@
 /*Récupérer les données du produit selectionné */
 let url = new URL(window.location.href);
 const productId = url.searchParams.get("id");
-const urlProduct = `http://localhost:3000/api/products/${productId}`;
 const itemQuantity = document.getElementById('quantity');
 const productOption = document.getElementById("colors");
+const urlProduct = `http://localhost:3000/api/products/${productId}`;
 init(urlProduct);
 function init(url) {
   fetch(url)
@@ -42,6 +42,7 @@ function init(url) {
     })
     .catch(function(err) {
       console.log(err);
+      window.alert("Échec de la connexion");
     }
     )
 }
@@ -63,7 +64,7 @@ function displayProduct(product) {
   }
 }
 
-/*Enregister le produit dans local storage après cliquer sur le bouton 'ajouter au panier'*/
+/*Enregistrer le produit dans local storage après cliquer sur le bouton 'ajouter au panier'*/
 function saveInLocalStorage(addedProducts) {
   var localProducts = JSON.parse(localStorage.getItem("localProducts"))
   if (localProducts === null) {
