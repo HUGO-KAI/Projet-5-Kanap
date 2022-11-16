@@ -186,7 +186,7 @@ form.address.addEventListener('change', function(){
 const valideAdresse = function(inputAdresse){
     let test = adresseRegExp.test(inputAdresse.value);
     if (test == false) {
-        document.getElementById("addressErrorMsg").textContent = "L'adresse non valide.";
+        document.getElementById("addressErrorMsg").textContent = "L'adresse non valide.Exemple:29 rue Proudhon...";
         return false;
     }
     else {
@@ -203,7 +203,7 @@ form.email.addEventListener('change', function(){
 const valideEmail = function(inputEmail){
    let testEmail = emailRegExp.exec(inputEmail.value);
     if (testEmail == null || testEmail == false) {
-        document.getElementById("emailErrorMsg").textContent = "Email non valide";
+        document.getElementById("emailErrorMsg").textContent = "Email non valide.Exemple: sophie123@gmail.com...";
         return false;
     }
     else {
