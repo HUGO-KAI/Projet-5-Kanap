@@ -90,11 +90,3 @@ function saveInLocalStorage(addedProducts) {
   }
   window.alert('Produit est ajouté') 
 }
-
-
-
-
- 
-
-
-
