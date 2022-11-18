@@ -9,6 +9,7 @@ async function showOrderId() {
     document.getElementById("orderId").textContent = `${orderId}`;
   } catch (e) {
     console.log('Error', e);
+    window.alert("Échec de la connexion");
   }
 }
 
