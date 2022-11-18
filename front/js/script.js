@@ -6,7 +6,6 @@ AFFICHER LES PRODUITS SUR LA PAGE D'ACCUEIL ET SES INTERACTIONS
 const urlProducts = `http://localhost:3000/api/products`;
 init(urlProducts);
 function init(url) {
-  //
   fetch(url)
   .then(function(res) {
     if (res.ok) {

@@ -203,7 +203,7 @@ form.email.addEventListener('change', function(){
 const valideEmail = function(inputEmail){
    let testEmail = emailRegExp.exec(inputEmail.value);
     if (testEmail == null || testEmail == false) {
-        document.getElementById("emailErrorMsg").textContent = "Email non valide.Exemple: sophie123@gmail.com...";
+        document.getElementById("emailErrorMsg").textContent = "Email non valide.Exemple: email@exemple.com...";
         return false;
     }
     else {
