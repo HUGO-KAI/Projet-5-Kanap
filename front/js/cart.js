@@ -6,15 +6,17 @@
 - Récupérer Id de la commande et rediger vers la page confirmation
 */
 
-/*Afficher les produits choisis par l'utilisateur sur la page panier*/
+
 const urlProducts = `http://localhost:3000/api/products`;
 container = document.getElementById("cart__items");
 let localProducts = JSON.parse(localStorage.getItem("localProducts"));
 let allProducts = [];
 init(urlProducts);
+
+/*Afficher les produits choisis par l'utilisateur sur la page panier*/
 function init (url) {
     if (localProducts == null || localProducts.length == 0){
-        document.querySelector ("h1").textContent = "Votre panier est vide";
+        //document.querySelector ("h1").textContent = "Votre panier est vide";
         totalQuantityPrice ();
     }
     else {
@@ -41,7 +43,7 @@ function init (url) {
                         </div>
                         <div class="cart__item__content__settings">
                             <div class="cart__item__content__settings__quantity">
-                            <p>Qté : ${localProducts[j].quantity}</p>
+                            <p>Qté : </p>
                             <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${localProducts[j].quantity}>
                             </div>
                             <div class="cart__item__content__settings__delete">
@@ -96,7 +98,7 @@ function deleteItem(){
             let supprimerColors = supprimerButton.closest(".cart__item").getAttribute("data-color");
             for(let localProduct of localProducts){
                 if (localProduct.id == supprimerId && localProduct.colors == supprimerColors){
-                    supprimerButton.closest(".cart__item").style = "display:none";
+                    container.removeChild (supprimerButton.closest(".cart__item"));
                     localProducts = localProducts.filter(product => product != localProduct);
                     localStorage.setItem("localProducts", JSON.stringify(localProducts));
                 }
@@ -117,7 +119,6 @@ function changeQuantity(){
             for(let localProduct of localProducts){
                 if (localProduct.id == changeQuantityId && localProduct.colors == changeQuantitycolors){
                     localProduct.quantity = parseInt(changeButton.value);
-                    changeQuantityP.textContent = `Qté : ${localProduct.quantity} `;
                     localStorage.setItem("localProducts", JSON.stringify(localProducts));
                 }
             }
@@ -139,7 +140,7 @@ const valideFirstName = function(inputFirstName){
         return false;
     }
     else {
-        document.getElementById("firstNameErrorMsg").textContent = "Prénom valide";
+        document.getElementById("firstNameErrorMsg").textContent = "";
         return true;
     }
 };
@@ -155,7 +156,7 @@ const valideLastName = function(inputLastName){
         return false;
     }
     else {
-        document.getElementById("lastNameErrorMsg").textContent = "Nom valide";
+        document.getElementById("lastNameErrorMsg").textContent = "";
         return true;
     }
 };
@@ -171,7 +172,7 @@ const valideCity = function(inputVille){
         return false;
     }
     else {
-        document.getElementById("cityErrorMsg").textContent = "Ville valide";
+        document.getElementById("cityErrorMsg").textContent = "";
         return true;
     }
 };
@@ -188,7 +189,7 @@ const valideAdresse = function(inputAdresse){
         return false;
     }
     else {
-        document.getElementById("addressErrorMsg").textContent = "L'adresse valide";
+        document.getElementById("addressErrorMsg").textContent = "";
         return true;
     }
 };
@@ -205,13 +206,15 @@ const valideEmail = function(inputEmail){
         return false;
     }
     else {
-        document.getElementById("emailErrorMsg").textContent = "Email valide";
+        document.getElementById("emailErrorMsg").textContent = "";
         return true;
     }
 };
 
-/*Constituer un objet contact (à partir des données du formulaire)*/
+
 const urlOrder = `http://localhost:3000/api/products/order`;
+
+/*Constituer un objet contact (à partir des données du formulaire)*/
 window.onload = function (){
     const buttonCommander = document.getElementById("order");
     buttonCommander.onclick = function (event){

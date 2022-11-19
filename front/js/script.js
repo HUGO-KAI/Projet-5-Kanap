@@ -2,9 +2,10 @@
 AFFICHER LES PRODUITS SUR LA PAGE D'ACCUEIL ET SES INTERACTIONS
 */
 
-/* Récupérer la liste de tous les produits*/
 const urlProducts = `http://localhost:3000/api/products`;
 init(urlProducts);
+
+/* Récupérer la liste de tous les produits*/
 function init(url) {
   fetch(url)
   .then(function(res) {
@@ -21,8 +22,9 @@ function init(url) {
   });
 }
 
-//Afficher les produits dans HTML
 const container = document.getElementById("items");
+
+//Afficher les produits dans HTML
 function displayProducts(products) {
   for (let i = 0; i < products.length; i++){
     container.innerHTML += `<a href="./product.html?id=${products[i]._id}">          
