@@ -11,5 +11,4 @@ async function showOrderId() {
     console.log('Error', e);
   }
 }
-
 showOrderId();
