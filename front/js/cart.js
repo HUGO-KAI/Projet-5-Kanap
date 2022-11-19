@@ -128,7 +128,7 @@ function changeQuantity(){
 
 //valider input prénom
 const form = document.querySelector(".cart__order__form");
-let nameRegExp = /^[a-z\é\è\ç]+[a-z\é\è\ç\s\-\'\_\/]*[a-z\é\è\ç\s]$/i;
+let nameRegExp = /^[a-zéèç]+[a-zéèç\s\-\'\_\/]*[a-zéèç\s]$/i;
 form.firstName.addEventListener('change', function(){
     valideFirstName(this);
 });
@@ -161,7 +161,7 @@ const valideLastName = function(inputLastName){
 };
 
 // valider input ville
-form.city.addEventListener('change', function(){
+form.city.addEventListener("change", function(){
     valideCity(this);
 });
 const valideCity = function(inputVille){
@@ -177,7 +177,7 @@ const valideCity = function(inputVille){
 };
 
 //valider input adresse
-let adresseRegExp = /^[a-z0-9\é\è\ç]+[a-z0-9\é\è\ç\s\-\'\_\/\,]*[a-z\é\è\ç]$/i;
+let adresseRegExp = /^[a-z0-9\éèç]+[a-z0-9\éèç\s\-\'\_\/\,]*[a-zéèç]$/i;
 form.address.addEventListener("change", function(){
     valideAdresse(this);
 });
