@@ -6,15 +6,17 @@
 - Récupérer Id de la commande et rediger vers la page confirmation
 */
 
-/*Afficher les produits choisis par l'utilisateur sur la page panier*/
+
 const urlProducts = `http://localhost:3000/api/products`;
-container = document.getElementById('cart__items');
-var localProducts = JSON.parse(localStorage.getItem("localProducts"));
+container = document.getElementById("cart__items");
+let localProducts = JSON.parse(localStorage.getItem("localProducts"));
 let allProducts = [];
 init(urlProducts);
+
+/*Afficher les produits choisis par l'utilisateur sur la page panier*/
 function init (url) {
     if (localProducts == null || localProducts.length == 0){
-        document.querySelector ('h1').textContent = 'Votre panier est vide';
+        //document.querySelector ("h1").textContent = "Votre panier est vide";
         totalQuantityPrice ();
     }
     else {
@@ -41,7 +43,7 @@ function init (url) {
                         </div>
                         <div class="cart__item__content__settings">
                             <div class="cart__item__content__settings__quantity">
-                            <p>Qté : ${localProducts[j].quantity}</p>
+                            <p>Qté : </p>
                             <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${localProducts[j].quantity}>
                             </div>
                             <div class="cart__item__content__settings__delete">
@@ -61,9 +63,8 @@ function init (url) {
             console.log(err);
             window.alert("Échec de la connexion");
         })
-        
-    }   
-}    
+    }
+}
 
 /*Indiquer quantité totale et le prix total sur la page panier*/
 function totalQuantityPrice (){
@@ -93,11 +94,11 @@ function deleteItem(){
     const supprimerButtons = document.querySelectorAll(".deleteItem");
     supprimerButtons.forEach(function(supprimerButton){
         supprimerButton.addEventListener("click",function(){
-            let supprimerId = supprimerButton.closest(".cart__item").getAttribute('data-id');
-            let supprimerColors = supprimerButton.closest(".cart__item").getAttribute('data-color');
+            let supprimerId = supprimerButton.closest(".cart__item").getAttribute("data-id");
+            let supprimerColors = supprimerButton.closest(".cart__item").getAttribute("data-color");
             for(let localProduct of localProducts){
                 if (localProduct.id == supprimerId && localProduct.colors == supprimerColors){
-                    supprimerButton.closest(".cart__item").style = "display:none";
+                    container.removeChild (supprimerButton.closest(".cart__item"));
                     localProducts = localProducts.filter(product => product != localProduct);
                     localStorage.setItem("localProducts", JSON.stringify(localProducts));
                 }
@@ -105,7 +106,6 @@ function deleteItem(){
             totalQuantityPrice ();
         })
     })
-    
 }
             
 /*Permettre aux utilisateurs de modifier la quantité des items présents dans le panier */
@@ -113,13 +113,12 @@ function changeQuantity(){
     const changeButtons = document.querySelectorAll(".itemQuantity");
     changeButtons.forEach(function(changeButton){
         changeButton.addEventListener("change",function(){
-            let changeQuantityId = changeButton.closest(".cart__item").getAttribute('data-id');
-            let changeQuantitycolors = changeButton.closest(".cart__item").getAttribute('data-color');
+            let changeQuantityId = changeButton.closest(".cart__item").getAttribute("data-id");
+            let changeQuantitycolors = changeButton.closest(".cart__item").getAttribute("data-color");
             let changeQuantityP = changeButton.previousElementSibling;
             for(let localProduct of localProducts){
                 if (localProduct.id == changeQuantityId && localProduct.colors == changeQuantitycolors){
                     localProduct.quantity = parseInt(changeButton.value);
-                    changeQuantityP.textContent = `Qté : ${localProduct.quantity} `;
                     localStorage.setItem("localProducts", JSON.stringify(localProducts));
                 }
             }
@@ -129,8 +128,8 @@ function changeQuantity(){
 }
 
 //valider input prénom
-const form = document.querySelector('.cart__order__form');
-let nameRegExp = /^[a-z\é\è\ç]+[a-z\é\è\ç\s\-\'\_\/]*[a-z\é\è\ç\s]$/i;
+const form = document.querySelector(".cart__order__form");
+let nameRegExp = /^[a-zéèç]+[a-zéèç\s\-\'\_\/]*[a-zéèç\s]$/i;
 form.firstName.addEventListener('change', function(){
     valideFirstName(this);
 });
@@ -141,7 +140,7 @@ const valideFirstName = function(inputFirstName){
         return false;
     }
     else {
-        document.getElementById("firstNameErrorMsg").textContent = "Prénom valide";
+        document.getElementById("firstNameErrorMsg").textContent = "";
         return true;
     }
 };
@@ -157,13 +156,13 @@ const valideLastName = function(inputLastName){
         return false;
     }
     else {
-        document.getElementById("lastNameErrorMsg").textContent = "Nom valide";
+        document.getElementById("lastNameErrorMsg").textContent = "";
         return true;
     }
 };
 
 // valider input ville
-form.city.addEventListener('change', function(){
+form.city.addEventListener("change", function(){
     valideCity(this);
 });
 const valideCity = function(inputVille){
@@ -173,14 +172,14 @@ const valideCity = function(inputVille){
         return false;
     }
     else {
-        document.getElementById("cityErrorMsg").textContent = "Ville valide";
+        document.getElementById("cityErrorMsg").textContent = "";
         return true;
     }
 };
 
 //valider input adresse
-let adresseRegExp = /^[a-z0-9\é\è\ç]+[a-z0-9\é\è\ç\s\-\'\_\/\,]*[a-z\é\è\ç]$/i;
-form.address.addEventListener('change', function(){
+let adresseRegExp = /^[a-z0-9\éèç]+[a-z0-9\éèç\s\-\'\_\/\,]*[a-zéèç]$/i;
+form.address.addEventListener("change", function(){
     valideAdresse(this);
 });
 const valideAdresse = function(inputAdresse){
@@ -190,14 +189,14 @@ const valideAdresse = function(inputAdresse){
         return false;
     }
     else {
-        document.getElementById("addressErrorMsg").textContent = "L'adresse valide";
+        document.getElementById("addressErrorMsg").textContent = "";
         return true;
     }
 };
 
 //valider input email
 var emailRegExp = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;
-form.email.addEventListener('change', function(){
+form.email.addEventListener("change", function(){
     valideEmail(this);
 });
 const valideEmail = function(inputEmail){
@@ -207,13 +206,15 @@ const valideEmail = function(inputEmail){
         return false;
     }
     else {
-        document.getElementById("emailErrorMsg").textContent = "Email valide";
+        document.getElementById("emailErrorMsg").textContent = "";
         return true;
     }
 };
 
-/*Constituer un objet contact (à partir des données du formulaire)*/
+
 const urlOrder = `http://localhost:3000/api/products/order`;
+
+/*Constituer un objet contact (à partir des données du formulaire)*/
 window.onload = function (){
     const buttonCommander = document.getElementById("order");
     buttonCommander.onclick = function (event){
@@ -227,7 +228,7 @@ window.onload = function (){
             //Créer un nouveau tableau avec les résultats de l'appel d'une fonction fournie sur chaque élément du tableau appelant
             let getId = localProducts.map(product => product.id);
             //Soummettre le formulaire de contact et la liste de commande
-            form.addEventListener('submit',function(e){
+            form.addEventListener("submit",function(e){
                 e.preventDefault();
                 orderConfirm (getId);
             });
