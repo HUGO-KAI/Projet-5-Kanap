@@ -8,13 +8,13 @@
 
 /*Afficher les produits choisis par l'utilisateur sur la page panier*/
 const urlProducts = `http://localhost:3000/api/products`;
-container = document.getElementById('cart__items');
-var localProducts = JSON.parse(localStorage.getItem("localProducts"));
+container = document.getElementById("cart__items");
+let localProducts = JSON.parse(localStorage.getItem("localProducts"));
 let allProducts = [];
 init(urlProducts);
 function init (url) {
     if (localProducts == null || localProducts.length == 0){
-        document.querySelector ('h1').textContent = 'Votre panier est vide';
+        document.querySelector ("h1").textContent = "Votre panier est vide";
         totalQuantityPrice ();
     }
     else {
@@ -61,9 +61,8 @@ function init (url) {
             console.log(err);
             window.alert("Échec de la connexion");
         })
-        
-    }   
-}    
+    }
+}
 
 /*Indiquer quantité totale et le prix total sur la page panier*/
 function totalQuantityPrice (){
@@ -93,8 +92,8 @@ function deleteItem(){
     const supprimerButtons = document.querySelectorAll(".deleteItem");
     supprimerButtons.forEach(function(supprimerButton){
         supprimerButton.addEventListener("click",function(){
-            let supprimerId = supprimerButton.closest(".cart__item").getAttribute('data-id');
-            let supprimerColors = supprimerButton.closest(".cart__item").getAttribute('data-color');
+            let supprimerId = supprimerButton.closest(".cart__item").getAttribute("data-id");
+            let supprimerColors = supprimerButton.closest(".cart__item").getAttribute("data-color");
             for(let localProduct of localProducts){
                 if (localProduct.id == supprimerId && localProduct.colors == supprimerColors){
                     supprimerButton.closest(".cart__item").style = "display:none";
@@ -105,7 +104,6 @@ function deleteItem(){
             totalQuantityPrice ();
         })
     })
-    
 }
             
 /*Permettre aux utilisateurs de modifier la quantité des items présents dans le panier */
@@ -113,8 +111,8 @@ function changeQuantity(){
     const changeButtons = document.querySelectorAll(".itemQuantity");
     changeButtons.forEach(function(changeButton){
         changeButton.addEventListener("change",function(){
-            let changeQuantityId = changeButton.closest(".cart__item").getAttribute('data-id');
-            let changeQuantitycolors = changeButton.closest(".cart__item").getAttribute('data-color');
+            let changeQuantityId = changeButton.closest(".cart__item").getAttribute("data-id");
+            let changeQuantitycolors = changeButton.closest(".cart__item").getAttribute("data-color");
             let changeQuantityP = changeButton.previousElementSibling;
             for(let localProduct of localProducts){
                 if (localProduct.id == changeQuantityId && localProduct.colors == changeQuantitycolors){
@@ -129,7 +127,7 @@ function changeQuantity(){
 }
 
 //valider input prénom
-const form = document.querySelector('.cart__order__form');
+const form = document.querySelector(".cart__order__form");
 let nameRegExp = /^[a-z\é\è\ç]+[a-z\é\è\ç\s\-\'\_\/]*[a-z\é\è\ç\s]$/i;
 form.firstName.addEventListener('change', function(){
     valideFirstName(this);
@@ -180,7 +178,7 @@ const valideCity = function(inputVille){
 
 //valider input adresse
 let adresseRegExp = /^[a-z0-9\é\è\ç]+[a-z0-9\é\è\ç\s\-\'\_\/\,]*[a-z\é\è\ç]$/i;
-form.address.addEventListener('change', function(){
+form.address.addEventListener("change", function(){
     valideAdresse(this);
 });
 const valideAdresse = function(inputAdresse){
@@ -197,7 +195,7 @@ const valideAdresse = function(inputAdresse){
 
 //valider input email
 var emailRegExp = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;
-form.email.addEventListener('change', function(){
+form.email.addEventListener("change", function(){
     valideEmail(this);
 });
 const valideEmail = function(inputEmail){
@@ -227,7 +225,7 @@ window.onload = function (){
             //Créer un nouveau tableau avec les résultats de l'appel d'une fonction fournie sur chaque élément du tableau appelant
             let getId = localProducts.map(product => product.id);
             //Soummettre le formulaire de contact et la liste de commande
-            form.addEventListener('submit',function(e){
+            form.addEventListener("submit",function(e){
                 e.preventDefault();
                 orderConfirm (getId);
             });
