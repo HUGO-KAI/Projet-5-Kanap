@@ -94,14 +94,19 @@ function deleteItem(){
     const supprimerButtons = document.querySelectorAll(".deleteItem");
     supprimerButtons.forEach(function(supprimerButton){
         supprimerButton.addEventListener("click",function(){
-            let supprimerId = supprimerButton.closest(".cart__item").getAttribute("data-id");
-            let supprimerColors = supprimerButton.closest(".cart__item").getAttribute("data-color");
-            for(let localProduct of localProducts){
-                if (localProduct.id == supprimerId && localProduct.colors == supprimerColors){
-                    container.removeChild (supprimerButton.closest(".cart__item"));
-                    localProducts = localProducts.filter(product => product != localProduct);
-                    localStorage.setItem("localProducts", JSON.stringify(localProducts));
-                }
+            if (window.confirm ("Êtes-vous sûr de vouloir supprimer cet élément du panier?")){
+                let supprimerId = supprimerButton.closest(".cart__item").getAttribute("data-id");
+                let supprimerColors = supprimerButton.closest(".cart__item").getAttribute("data-color");
+                for(let localProduct of localProducts){
+                    if (localProduct.id == supprimerId && localProduct.colors == supprimerColors){
+                        container.removeChild (supprimerButton.closest(".cart__item"));
+                        localProducts = localProducts.filter(product => product != localProduct);
+                        localStorage.setItem("localProducts", JSON.stringify(localProducts));
+                    }
+                };
+            }
+            else {
+                return;
             }
             totalQuantityPrice ();
         })

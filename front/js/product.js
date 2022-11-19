@@ -48,7 +48,6 @@ function init(url) {
     });
 }
 
-
 const itemImg = document.querySelector(".item__img");
 const productName = document.getElementById("title");
 const productPrice = document.getElementById("price");
