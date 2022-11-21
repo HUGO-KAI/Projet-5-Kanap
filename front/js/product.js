@@ -43,7 +43,6 @@ function init(url) {
       };
     })
     .catch(function(err) {
-      console.log(err);
       window.alert("Échec de la connexion");
     });
 }

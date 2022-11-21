@@ -9,7 +9,6 @@ function showOrderId() {
     const orderId = url.searchParams.get("id");
     document.getElementById("orderId").textContent = `${orderId}`;
   } catch (e) {
-    console.log('Error', e);
     window.alert("Échec de la connexion");
   }
 }

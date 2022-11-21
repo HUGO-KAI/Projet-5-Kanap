@@ -17,7 +17,6 @@ function init(url) {
     displayProducts(value);
   })
   .catch(function(err) {
-    console.log(err);
     window.alert("Échec de la connexion");
   });
 }

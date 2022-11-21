@@ -60,7 +60,6 @@ function init (url) {
             changeQuantity();
         })
         .catch(function(err) {
-            console.log(err);
             window.alert("Échec de la connexion");
         })
     }
@@ -267,7 +266,6 @@ function orderConfirm (getId){
           localStorage.clear();  
         })
         .catch(function (err) {
-          console.log(err)
           window.alert("Échec de la connexion");
         });
     }
