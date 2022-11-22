@@ -88,5 +88,5 @@ function saveInLocalStorage(addedProducts) {
         localStorage.setItem("localProducts", JSON.stringify(localProducts));
     }
   }
-  window.alert("Produit est ajouté")
+  window.alert("Produit est ajouté au panier")
 }
