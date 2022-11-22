@@ -119,7 +119,6 @@ function changeQuantity(){
         changeButton.addEventListener("change",function(){
             let changeQuantityId = changeButton.closest(".cart__item").getAttribute("data-id");
             let changeQuantitycolors = changeButton.closest(".cart__item").getAttribute("data-color");
-            let changeQuantityP = changeButton.previousElementSibling;
             for(let localProduct of localProducts){
                 if (localProduct.id == changeQuantityId && localProduct.colors == changeQuantitycolors){
                     localProduct.quantity = parseInt(changeButton.value);
