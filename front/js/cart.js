@@ -139,7 +139,7 @@ form.firstName.addEventListener('change', function(){
 const valideFirstName = function(inputFirstName){
     let testFirstName = nameRegExp.test(inputFirstName.value);
     if (testFirstName == false) {
-        document.getElementById("firstNameErrorMsg").textContent = "Prénom non valide. Example: Patrick, hélène, françois, Jean-luc...";
+        document.getElementById("firstNameErrorMsg").textContent = "Prénom non valide. Exemple: Patrick, hélène, françois, Jean-luc...";
         return false;
     }
     else {
@@ -155,7 +155,7 @@ form.lastName.addEventListener('change', function(){
 const valideLastName = function(inputLastName){
     let testLastName = nameRegExp.test(inputLastName.value);
     if (testLastName == false) {
-        document.getElementById("lastNameErrorMsg").textContent = "Nom non valide. Example: Martin, D'Artagnan, Robespierre...";
+        document.getElementById("lastNameErrorMsg").textContent = "Nom non valide. Exemple: Martin, D'Artagnan, Robespierre...";
         return false;
     }
     else {
@@ -171,7 +171,7 @@ form.city.addEventListener("change", function(){
 const valideCity = function(inputVille){
     let testCity = nameRegExp.test(inputVille.value);
     if (testCity == false) {
-        document.getElementById("cityErrorMsg").textContent = "Ville non valide.Example: Paris, Lyon, Vitry-sur-Seine...";
+        document.getElementById("cityErrorMsg").textContent = "Ville non valide.Exemple: Paris, Lyon, Vitry-sur-Seine...";
         return false;
     }
     else {
