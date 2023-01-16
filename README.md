@@ -17,6 +17,7 @@
 #### - cd back
 #### - npm install
 #### - npm start
+#### - cd front
 #### - ouvrez index.html avec Live Server
 
 
