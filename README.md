@@ -13,9 +13,10 @@
 #### - l’utilisation de localStorage
 
 ## Installation ##
+#### - Clonez le repository
 #### - cd back
 #### - npm install
 #### - npm start
-#### - ouvrir index.html avec Live Server
+#### - ouvrez index.html avec Live Server
 
 
